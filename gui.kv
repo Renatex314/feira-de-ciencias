@@ -1,0 +1,191 @@
+<Play>:
+	bola: bola
+	info: info
+	plataforma: sla
+	portais: portals
+
+	size: root.size
+	canvas:
+		Color:
+			rgba: 1, 1, 1, 1
+		Rectangle:
+			size: root.size
+			source: "drawables/sky.jpg"
+		Color:
+			rgba: 0.8, 0.8, 0.8, 1
+		Rectangle:
+			size: root.width, root.height/10
+			source: "drawables/grass.jpg"
+		Color:
+			rgba: 0.8, 0.8, 0.8, 1
+
+	Plataforma:
+		id: sla
+		size: root.width - 10, root.height/10
+		pos: root.width, root.height - root.height/10
+	Ball:
+		id: bola
+		center: root.center
+	Info:
+		id: info
+		bola: root.bola
+		portal: root.portais
+		plataforma: root.plataforma
+		tempo: root.resettempo
+		comp: root.width
+		size: root.width / 7, root.height
+		pos: root.width - (root.width / 7), 0
+	Portais:
+		id: portals
+		enabled: False
+		size: root.size
+		
+<Ball>:
+	size: 50, 50
+
+	canvas:
+		Color:
+			rgba: 0, 0, 0, 1
+		Ellipse:
+			size: self.size[0] + 3, self.size[1] + 3
+			pos: self.pos[0] - 1.5, self.pos[1] - 1.5 
+		Color:
+			rgba: 1, 1, 1, self.arrowvis
+		Rotate:
+			angle: self.direction
+			origin: self.center
+		Rectangle:
+			size: self.size[0] + 60, self.arrowsize
+			source: "drawables/arrow.png"
+			pos: self.pos[0] - 30, self.pos[1] - 50
+		Rectangle:
+			size: 50, 50
+			source: self.imagevelo
+			pos: self.pos[0], self.pos[1] + self.arrowsize - 50
+		Color:
+			rgba: self.r, self.g, self.b, 1
+		Ellipse:
+			size: self.size
+			pos: self.pos
+		Rotate:
+			angle: -self.direction
+			origin: self.center
+
+<Info>:
+	ginput: ginput
+	cinput: cinput
+	txvel: txvel
+	txgr: txgr
+	txcoef: txcoef
+	btshide: btshide
+	btarrowhide: btarrowhide
+	box: box
+	salfa: 0.5
+
+	canvas:
+		Color:
+			rgba: 0, 0, 0, root.salfa
+		Rectangle:
+			size: root.size
+			pos: root.pos
+			
+	Button:
+		id: btshide
+		size: root.width, root.height/10
+		pos: 0, root.top - root.height/10
+		on_release: root.shide()
+		text: "esconder"
+	Button:
+		id: btarrowhide
+		size: root.width, root.height/10
+		pos: 0, root.top - (root.height/10)*2
+		on_release: root.hide_arrow(root.bola)
+		text: "esconder seta"
+
+	BoxLayout:
+		id: box
+		pos: root.pos
+		size: root.size
+		orientation: "vertical"
+
+		Label:
+			id: txvel
+			text: "velocidade: 0 m/s"
+		Label:
+			id: txgr
+			text: "gravidade:"
+		TextInput:
+			id: ginput
+			text: "10"
+			font_size: 30
+		Label:
+			id: txcoef
+			text: "coef. de restituição:"
+		TextInput:
+			id: cinput
+			text: "0.8"
+			font_size: 30
+		Button:
+			id: btreset
+			text: "resetar"
+			on_release: root.resetar(root.bola, root.tempo)
+		Button:
+			id: btplat
+			text: "plataforma"
+			on_release: root.show_plataforma(root.plataforma, root.comp)
+		Button:
+			id: portais
+			text: "portais"
+			on_release: root.portals(root.portal, root.bola)
+		Button:
+			text: "SpeedLight"
+			on_release: root.speedlight(root.bola)
+
+<Plataforma>:
+	canvas:
+		Rectangle:
+			size: self.size[0], -self.size[1]
+			pos: self.pos[0], self.pos[1] + self.size[1]
+			source: "drawables/grass.jpg"
+
+<Portalb>:
+	canvas:
+		Color:
+			rgba: 0, 0, 0.7, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+<Portalo>:
+	canvas:
+		Color:
+			rgba: 1, 0.5, 0, 1
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+<Portais>:
+	portalo: portalo
+	portalb: portalb
+
+	Portalo:
+		id: portalo
+		size: 100, 70
+		pos: 5000, root.height / 2
+	Portalb:
+		id: portalb
+		size: 100, 70
+		pos: 5000, root.height / 2
+
+<midplatform>:
+	canvas:
+		Color:
+			rgba: 1, 1, 1, 1
+		Rectangle:
+			size: root.size[0]/10, root.size[1]
+			pos: root.width/2 - root.size[0]/10, 0
+			source: "drawables/grass90.jpg"
+		Rectangle:
+			size: root.size[0]/10, -root.size[1]
+			pos: root.width/2, root.size[1]
+			source: "drawables/grass90.jpg"

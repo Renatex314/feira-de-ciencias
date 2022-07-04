@@ -1,0 +1,1 @@
+Para que este simulador funcione, é necessário ter as bibliotecas do kivy instalados no python.
